@@ -27,7 +27,7 @@
 
 2.使用nasm工具，编译文件。（网上搜下就能找到nasm软件）
 在命令行界面下输入：（保证boot.asm文件在当前目录下，表示还不知道怎么放图片~~）
-![](http://https://raw.githubusercontent.com/echoorchid/MiniOS/master/boot/QQ%E5%9B%BE%E7%89%8720160708110824.png)
+![nasm截图](http://https://raw.githubusercontent.com/echoorchid/MiniOS/master/boot/QQ%E5%9B%BE%E7%89%8720160708110824.png)
 
    ` nasm boot.asm -o boot.bin`
 
