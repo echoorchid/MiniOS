@@ -1,27 +1,34 @@
 # MiniOS（排版好乱，不忍猝读~~）
 自己动手写操作系统--于渊
+
 实践步骤：
+
 1.新建一个boot.asm文件，asm后缀是汇编的意思，然后把代码敲进去。汇编中；后面是注释。
-; 文件名 boot.asm 
-org 7c00h                     ; BIOS读入MBR后，从0x7c00h处开始执行 
-; 下面部分和10h有关中断，10h中断用来显示字符
-mov ax, cs
-mov es, ax
-mov ax, msg
-mov bp, ax                    ; ES:BP表示显示字符串的地址
-mov cx, msgLen                ; CX存字符长度
-mov ax, 1301h                 ; AH=13h表示向TTY显示字符，AL=01h表示显示方式（字符串是否包含显示属性，01h表示不包含）
-mov bx, 000fh                 ; BH=00h表示页号，BL=0fh表示颜色
-mov dl, 0                     ; 列
-int 10h  
-msg: db "hello world, welcome to OS!"
-msgLen: equ $ - msg           ; 字符串长度
-times 510 - ($ - $$) db 0     ; 填充剩余部分
-dw 0aa55h                     ; 魔数，必须有这两个字节BIOS才确认是MBR
+  
+    ; 文件名 boot.asm
+    org 7c00h ; BIOS读入MBR后，从0x7c00h处开始执行
+    ; 下面部分和10h有关中断，10h中断用来显示字符
+    mov ax, cs
+    mov es, ax
+    mov ax, msg
+    mov bp, ax; ES:BP表示显示字符串的地址
+    mov cx, msgLen; CX存字符长度
+    mov ax, 1301h ; AH=13h表示向TTY显示字符，AL=01h表示显示方式（字符串是否包含显示属性，01h表示不包含）
+    mov bx, 000fh ; BH=00h表示页号，BL=0fh表示颜色
+    mov dl, 0 ; 列
+    int 10h  
+    msg: db "hello world, welcome to OS!"
+    msgLen: equ $ - msg   ; 字符串长度
+    times 510 - ($ - $$) db 0 ; 填充剩余部分
+    dw 0aa55h ; 魔数，必须有这两个字节BIOS才确认是MBR '
+
+
 2.使用nasm工具，编译文件。（网上搜下就能找到nasm软件）
 在命令行界面下输入：（保证boot.asm文件在当前目录下，表示还不知道怎么放图片~~）
 nasm boot.asm -o boot.bin
+
 3.使用上步骤生成的boot.bin和网上下载的FloppyWriter.exe生成img镜像文件。
+
 4.使用VMware软件创建一个虚拟机，加载上面的镜像文件，启动此虚拟机，就可以看到界面上显示msg信息了。
 
 写操作系统看似是一个复杂的过程，但只要我们将过程分解，完成每一步，那么完成一个操作系统就是水到渠成的事了。好了，我们就看一下计算机的启动过程，看操作系统何时被启动的。
